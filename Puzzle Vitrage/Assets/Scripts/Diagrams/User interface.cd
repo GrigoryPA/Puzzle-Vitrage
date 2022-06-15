@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="GameSettingsVisualisator">
+    <Position X="0.75" Y="0.75" Width="2" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" ManuallyRouted="true">
+      <Path>
+        <Point X="6.375" Y="4.75" />
+        <Point X="6.375" Y="4.55" />
+        <Point X="4.832" Y="4.55" />
+        <Point X="4.832" Y="2.832" />
+        <Point X="2.873" Y="2.832" />
+        <Point X="2.873" Y="1.785" />
+        <Point X="2.75" Y="1.785" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAACAABAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\LevelControllers\GameSettingsVisualisator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProgressLevelVisualisator">
+    <Position X="3" Y="0.75" Width="1.75" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" ManuallyRouted="true">
+      <Path>
+        <Point X="6.375" Y="4.75" />
+        <Point X="6.375" Y="4.55" />
+        <Point X="4.832" Y="4.55" />
+        <Point X="4.832" Y="2.822" />
+        <Point X="3.875" Y="2.822" />
+        <Point X="3.875" Y="2.434" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\LevelControllers\ProgressLevelVisualisator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TimeCounterScript">
+    <Position X="0.75" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAQAAAEAAQAAAAAAAAAAAAIgBAAAoAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TimeCounterScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ButtonsScript">
+    <Position X="5" Y="0.75" Width="3" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedToPoint="true">
+      <Path>
+        <Point X="6.375" Y="4.75" />
+        <Point X="6.375" Y="4.358" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAIAABAAAAEgAIAAAAIAAAAAABAAEAQAABIIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ButtonsScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FPSCounterScript">
+    <Position X="3" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAQAAAAAAAAAEAAECAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\FPSCounterScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityEngine.MonoBehaviour">
+    <Position X="5" Y="4.75" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

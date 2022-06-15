@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 893c623c049030a40b1aef4d3ebdd164
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - loadingScreen: {fileID: 915123393970808519, guid: 3e85425f7046cc549b1638b7799c213b, type: 3}
+  - errorPanel: {fileID: 2219535190834074799, guid: 952cb2df9041d3e4baac19bfd772c652, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

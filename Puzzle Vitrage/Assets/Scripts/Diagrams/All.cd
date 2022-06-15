@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TimeCounterScript" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="4.75" Y="1.125" />
+        <Point X="4.75" Y="1.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAQAAAEAAQAAAAAAAAAAAAIgBAAAoAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TimeCounterScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveManager" Collapsed="true">
+    <Position X="2.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAIAAAgAAAAAAEQAAAAAAAAEAAAAAAACAAAA=</HashCode>
+      <FileName>Assets\Scripts\SaveDataScripts\SaveManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ButtonsScript" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="3.898" Y="1.125" />
+        <Point X="3.898" Y="2.346" />
+        <Point X="4.75" Y="2.346" />
+        <Point X="4.75" Y="2.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAIAABAAAAEgAIAAAAIAAAAAABAAEAQAABIIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ButtonsScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CurrentData" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAQAAgAAgQAAEAACAAshCABABLAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CurrentData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationScript" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="3.898" Y="1.125" />
+        <Point X="3.898" Y="3.346" />
+        <Point X="4.688" Y="3.346" />
+        <Point X="4.688" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAiAAAAAAIACAABAACAAABAQAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\RotationScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RayTracingObject" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="3.898" Y="1.125" />
+        <Point X="3.898" Y="4.346" />
+        <Point X="4.625" Y="4.346" />
+        <Point X="4.625" Y="4.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQIAAAAAAAAAIAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\RayTracingScripts\RayTracingObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Raytracer" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="8.125" Y="1.125" />
+        <Point X="8.125" Y="1.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>BCRQRIAAIAEAAAAAcAihAAAAgBAQAAGoUBwCIAAACEg=</HashCode>
+      <FileName>Assets\Scripts\RayTracingScripts\Raytracer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProgressLevelVisualisator" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="6.562" Y="1.125" />
+        <Point X="6.562" Y="1.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\LevelControllers\ProgressLevelVisualisator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LevelControllerScript" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="5.602" Y="1.125" />
+        <Point X="5.602" Y="2.346" />
+        <Point X="6.5" Y="2.346" />
+        <Point X="6.5" Y="2.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAACgAAqQAAAAAhAAAAAAUIAAAEAIAABAAAAAABCI=</HashCode>
+      <FileName>Assets\Scripts\LevelControllers\LevelControllerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameSettingsVisualisator" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="5.602" Y="1.125" />
+        <Point X="5.602" Y="3.346" />
+        <Point X="6.375" Y="3.346" />
+        <Point X="6.375" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAACAABAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\LevelControllers\GameSettingsVisualisator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CustomLevelCreator" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="5.602" Y="1.125" />
+        <Point X="5.602" Y="4.346" />
+        <Point X="6.438" Y="4.346" />
+        <Point X="6.438" Y="4.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAABKCAAAAQChCAAAgQAABIEAsAABAAAACCAAA=</HashCode>
+      <FileName>Assets\Scripts\LevelControllers\CustomLevelCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveData.Level" Collapsed="true">
+    <Position X="4" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAgAAAAAABAAAAAAAAABABAA=</HashCode>
+      <FileName>Assets\Scripts\SaveDataScripts\Level.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveData.Progress" Collapsed="true">
+    <Position X="4" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SaveDataScripts\Progress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveData.Settings" Collapsed="true">
+    <Position X="4" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SaveDataScripts\Settings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="UnityEngine.MonoBehaviour" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="UnityEngine.Behaviour" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="UnityEngine.Component" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="UnityEngine.Object" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="JoystickPlayerExample" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="5.602" Y="1.125" />
+        <Point X="5.602" Y="2.346" />
+        <Point X="8.25" Y="2.346" />
+        <Point X="8.25" Y="2.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAEAAAAAAAAAAAAAQAAAAAAAAAEAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Examples\JoystickPlayerExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="JoystickSetterExample" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="5.602" Y="1.125" />
+        <Point X="5.602" Y="3.346" />
+        <Point X="8.25" Y="3.346" />
+        <Point X="8.25" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAEAAAAAAAAAAAAAAAACAAAAAQAQAQAACAAEIAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Examples\JoystickSetterExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Joystick" Collapsed="true">
+    <Position X="7.5" Y="5.5" Width="1.5" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.5" />
+        <Point X="3" Y="1.125" />
+        <Point X="5.602" Y="1.125" />
+        <Point X="5.602" Y="5.346" />
+        <Point X="8.25" Y="5.346" />
+        <Point X="8.25" Y="5.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACABACIACRICAAEACBAASICAAEAADAKAQQCCAEAIAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Base\Joystick.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" />
+  </Class>
+  <Class Name="FloatingJoystick" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <InheritanceLine Type="Joystick" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="5.5" />
+        <Point X="8.75" Y="5.191" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAACAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityEngine.GameObject" Collapsed="true">
+    <Position X="2.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Struct Name="MeshRT" Collapsed="true">
+    <Position X="2.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAACAAAIAAIAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\RayTracingScripts\MeshRT.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

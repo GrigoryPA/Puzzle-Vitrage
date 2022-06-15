@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="CurrentData">
+    <Position X="7.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAQAAgAAgQAAEAACAAshCABABLAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CurrentData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="currentSettings" />
+      <Field Name="currentLevel" />
+      <Field Name="currentProgress" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SaveData.Level">
+    <Position X="3.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAgAAAAAABAAAAAAAAABABAA=</HashCode>
+      <FileName>Assets\Scripts\SaveDataScripts\Level.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveData.Progress">
+    <Position X="3.75" Y="4.25" Width="2" />
+    <InheritanceLine Type="System.Object" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="5.75" />
+        <Point X="4.75" Y="5.558" />
+        <Point X="3.558" Y="5.558" />
+        <Point X="3.558" Y="4.812" />
+        <Point X="3.75" Y="4.812" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SaveDataScripts\Progress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveData.Settings">
+    <Position X="3.75" Y="2.5" Width="2" />
+    <InheritanceLine Type="System.Object" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="5.75" />
+        <Point X="4.75" Y="5.558" />
+        <Point X="3.558" Y="5.558" />
+        <Point X="3.558" Y="3.188" />
+        <Point X="3.75" Y="3.188" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\SaveDataScripts\Settings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveManager">
+    <Position X="7.25" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAIAAAgAAAAAAEQAAAAAAAAEAAAAAAACAAAA=</HashCode>
+      <FileName>Assets\Scripts\SaveDataScripts\SaveManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object">
+    <Position X="3.75" Y="5.75" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

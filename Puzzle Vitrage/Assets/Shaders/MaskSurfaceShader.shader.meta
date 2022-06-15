@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1314fef6a1b33c94fbfceeed35c45c60
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MainTex1: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+  - _BumpMap1: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+  - _MainTex2: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+  - _BumpMap2: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+  - _MainTex3: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+  - _BumpMap3: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+  - _MaskMap: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

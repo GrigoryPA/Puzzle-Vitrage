@@ -1,0 +1,532 @@
+/*This shader implements the calculation of the color of the screen pixel
+for which it was called using a simplified and optimized ray tracing algorithm.
+In the shader code, it is not possible to encode the Russian layout, 
+so the comments will be in English.
+*/
+
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it with cs.SetTexture
+RWTexture2D<float4> Result;
+
+
+//Almost all the fields described below are initialized 
+//from the main code when the shader is called
+
+
+//CAMERA PARAMETERS
+float4x4 _CameraToWorld;
+float4x4 _CameraInverseProjection;
+
+
+//SKYBOX TEXTURE
+Texture2D<float4> _SkyboxTexture;
+SamplerState sampler_SkyboxTexture;
+
+
+//ROOM TEXTURE
+Texture2D<float4> _RoomMaskMap;
+SamplerState sampler_RoomMaskMap;
+Texture2D<float4> _RoomColorTexture1;
+SamplerState sampler_RoomColorTexture1;
+Texture2D<float4> _RoomBumpMap1;
+SamplerState sampler_RoomBumpMap1;
+float _BumpScale1 = 1.0f;
+float2 _TexTiling1 = 1.0f;
+Texture2D<float4> _RoomColorTexture2;
+SamplerState sampler_RoomColorTexture2;
+Texture2D<float4> _RoomBumpMap2;
+SamplerState sampler_RoomBumpMap2;
+float _BumpScale2 = 1.0f;
+float2 _TexTiling2 = 1.0f;
+
+
+//CONSTANTS
+static const float PI = 3.14159265f;
+static const float EPSILON = 1e-8;
+
+
+//NUMBER OF ITERATION
+int _TransparencyCount;
+
+
+//LIGHTs PARAMETERS
+float4 _SpotLightDirection;
+float4 _SpotLightPosition;
+float _LightRange;
+float4 _PointLightPosition;
+
+
+//STRUCT OF MESHRT 
+//(identical structure in the main code)
+struct MeshRT
+{
+    float4x4 localToWorldMatrix;
+    int indices_offset;
+    int indices_count;
+    float transparency;
+};
+
+//OBJECTS MESHES PARAMETERS
+StructuredBuffer<MeshRT> _MeshObjects;
+StructuredBuffer<float3> _Vertices;
+StructuredBuffer<float2> _VerticesUV;
+StructuredBuffer<int> _Indices;
+StructuredBuffer<uint> _Colors;
+float _selectedFace = -10;
+
+
+//RAY STRUCTURER 
+//(with direction and energy)
+struct Ray
+{
+    float3 origin;
+    float3 direction;
+    float3 energy;
+};
+
+//Constructor of the ray structure based on two points.
+Ray CreateRay (float3 origin, float3 direction)
+{
+    Ray ray;
+    ray.origin = origin;
+    ray.direction = direction;
+    ray.energy = 1.0f;
+    return ray; 
+}
+
+//Constructor of the ray coming from the camera
+//and passing through the specified pixel of the screen.
+Ray CreateCameraRay (float2 uv)
+{
+    float3 origin = mul(_CameraToWorld,
+        float4(0.0f, 0.0f, 0.0f, 1.0f)).xyz;
+    float3 direction = mul(_CameraInverseProjection,
+        float4(uv, 0.0f, 1.0f)).xyz;
+    direction=mul(_CameraToWorld,float4(direction,0.0f)).xyz;
+    direction=normalize(direction);
+
+    return CreateRay(origin,direction);
+}
+
+
+//HIT OF RAY 
+//(used to set the parameters of the hit of the ray with the object)
+struct RayHit
+{
+    float3 position;
+    float distance;
+    float3 normal;
+    float specular;
+    float3 albedo;
+    float transparency;
+};
+
+//RayHit structure constructor with filling in fields with default values
+RayHit CreateRayHit()
+{
+    RayHit hit;
+    hit.position = 0.0f;
+    hit.distance = 1.#INF;
+    hit.normal = 0.0f;
+    hit.specular = 0.0f;
+    hit.albedo = 0.0f;
+    hit.transparency = 0.0f;
+    return hit;
+}
+
+
+//INTERSECTS
+//Determination of the intersection of 
+//a ray and a triangle by variation of the Moller-Trumbore algorithm.
+bool IntersectTriangle_MT97(Ray ray, float3 vert0, float3 vert1, float3 vert2,
+	inout float t, inout float u, inout float v)
+{
+	//find vectors for two edges sharing vert0
+	float3 edge1 = vert1 - vert0;
+	float3 edge2 = vert2 - vert0;
+
+	//begin calculating determinant
+	float3 pvec = cross(ray.direction, edge2);
+
+	//if determinant is near zero, ray lies in plane of triangle
+	float det = dot(edge1, pvec);
+
+	// ray is parallel to the plane
+	if (det < EPSILON && det > -EPSILON)
+    {
+        //no intersection
+		return false;
+    }
+    else
+    {
+	    float inv_det = 1.0f / det;
+	    // calculate distance from vert0 to ray origin
+	    float3 tvec = ray.origin - vert0;
+
+	    // calculate U parameter and test bounds
+	    u = dot(tvec, pvec) * inv_det;
+	    if (u < 0.0f || u > 1.0f)
+        {
+            //no intersection
+		    return false;
+        }
+        else
+        {
+	        // prepare to test V parameter
+	        float3 qvec = cross(tvec, edge1);
+
+	        // calculate V parameter and test bounds
+	        v = dot(ray.direction, qvec) * inv_det;
+	        if (v < 0.0 || u + v > 1.0f)
+            {
+                //no intersection
+		        return false;
+            }
+            else
+            {
+	            // calculate t, ray intersects triangle
+	            t = dot(edge2, qvec) * inv_det;
+	            return true;
+            }
+        }
+    }
+}
+
+//Checking all triangles of the mesh of a transparent object 
+//for an intersection with a ray and determining the nearest hit.
+void IntersectMeshObject(Ray ray, inout RayHit bestHit, MeshRT meshObject)
+{
+    //We determine the reading locations in the buffers
+    float offset = meshObject.indices_offset;
+    float count = offset + meshObject.indices_count;
+
+    //we go through all the triangles
+    for (float i = offset; i < count; i += 3)
+    {
+        //coordinates with account for the rotation and displacement of the object
+        float3 v0 = (mul(meshObject.localToWorldMatrix,
+            float4(_Vertices[_Indices[i]], 1))).xyz;
+        float3 v1 = (mul(meshObject.localToWorldMatrix,
+            float4(_Vertices[_Indices[i + 1]], 1))).xyz;
+        float3 v2 = (mul(meshObject.localToWorldMatrix,
+            float4(_Vertices[_Indices[i + 2]], 1))).xyz;
+        
+        //the distance to the intersection 
+        //and the barycentric coordinates of the intersection
+        float t=0.0f, u=0.0f, v=0.0f;
+        if (IntersectTriangle_MT97(ray, v0, v1, v2, t, u, v))
+        {
+            //if the intersection is closer than before
+            if (t > 0 && t < bestHit.distance)
+            {
+                //setting the intersection parameters
+                bestHit.normal = normalize(cross(v1 - v0, v2 - v0));
+                bestHit.distance = t;
+                bestHit.position = ray.origin + t * ray.direction;
+                bestHit.transparency = meshObject.transparency;
+                //���� ������
+                bestHit.albedo = float3(_Colors[i] * 0.0035f, _Colors[i+1] * 0.0035f, _Colors[i+2] * 0.0035f);
+                //The color of the edges is black or white if the face is highlighted
+                if (i - offset == _selectedFace)
+                {
+                    if (u < 0.03f || v < 0.03f || (1 - u - v) < 0.03f)
+                    {
+                        bestHit.albedo = float3(1.0f, 1.0f, 1.0f);
+                    }
+                }
+                else
+                {
+                    if (u < 0.02f || v < 0.02f || (1 - u - v) < 0.02f)
+                    {
+                        bestHit.albedo = 0.0f;
+                        bestHit.transparency = 0.0f;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Checking all triangles of the mesh of the room for an intersection 
+//with the beam and determining the intersection closest to the source of the beam. 
+//Additionally, the color and normal at the collision point are determined 
+//from the corresponding textures of the room.
+void IntersectMeshRoom(Ray ray, inout RayHit bestHit, MeshRT meshObject)
+{
+    //We determine the reading locations in the buffers
+    float offset = meshObject.indices_offset;
+    float count = offset + meshObject.indices_count;
+    uint j = 0;
+
+    //we go through all the triangles
+    for (float i = offset; i < count; i += 3, ++j)
+    {
+        //coordinates with account for the rotation and displacement of the object
+        float3 v0 = (mul(meshObject.localToWorldMatrix,
+            float4(_Vertices[_Indices[i]], 1))).xyz;
+        float3 v1 = (mul(meshObject.localToWorldMatrix,
+            float4(_Vertices[_Indices[i + 1]], 1))).xyz;
+        float3 v2 = (mul(meshObject.localToWorldMatrix,
+            float4(_Vertices[_Indices[i + 2]], 1))).xyz;
+
+        //the distance to the intersection 
+        //and the barycentric coordinates of the intersection
+        float t=0.0f, u=0.0f, v=0.0f;
+        if (IntersectTriangle_MT97(ray, v0, v1, v2, t, u, v))
+        {
+            //if the intersection is closer than before
+            if (t > 0 && t < bestHit.distance)
+            {
+                //getting the texture coordinates
+                float2 uv = _VerticesUV[_Indices[i+1]]*u + _VerticesUV[_Indices[i+2]]*v + _VerticesUV[_Indices[i]]*(1-u-v);
+                //mask pixel color
+                float3 maskColor = _RoomMaskMap.SampleLevel(sampler_RoomMaskMap, uv, 0).xyz;
+                //given the mask, textures and texture coordinates, we find the color and normal at this point
+                float3 textureColor = _RoomColorTexture1.SampleLevel(sampler_RoomColorTexture1, uv * _TexTiling1, 0).xyz * maskColor.x 
+                                    + _RoomColorTexture2.SampleLevel(sampler_RoomColorTexture2, uv * _TexTiling2, 0).xyz * maskColor.y;
+                float3 normal =  float3(_RoomBumpMap1.SampleLevel(sampler_RoomBumpMap1, uv * _TexTiling1, 0).wy * maskColor.x
+                                + _RoomBumpMap2.SampleLevel(sampler_RoomBumpMap2, uv * _TexTiling2, 0).wy * maskColor.y, 0.0f);
+                normal.xy = (normal.xy * 2.0f - 1.0f) * (_BumpScale1 * maskColor.x + _BumpScale2 * maskColor.y);
+                normal.z = sqrt(1 - saturate(dot(normal.xy, normal.xy)));
+                normal = normal.xzy;
+
+                //initialize all rayhit fields
+                bestHit.normal = normalize((mul(meshObject.localToWorldMatrix,
+                    float4(normal, 1.0f))).xyz);
+                bestHit.albedo = textureColor * 255;
+                bestHit.distance = t;
+                bestHit.position = ray.origin + t * ray.direction;
+                bestHit.specular = 0.65f;
+                bestHit.transparency = meshObject.transparency;
+            }
+        }
+    }
+}
+
+
+//TRACE
+//Collision detection by alternately calling the 
+//IntersectMeshObject functions, and then IntersectMeshRoom.
+RayHit Trace(Ray ray)
+{
+    RayHit bestHit = CreateRayHit();
+    
+    IntersectMeshObject(ray, bestHit, _MeshObjects[1]);
+    IntersectMeshRoom(ray, bestHit, _MeshObjects[0]);
+    
+    return bestHit;
+}
+
+
+//Determination of the illumination of the collision site, 
+//where two light sources are taken into account: point and directional. 
+//The dependence of illumination on distance, angle (for directional light) 
+//and intensity of the source is analyzed on the basis of the Inverse Square Law.
+float3 Lighting(Ray ray, RayHit hit)
+{
+    //SPOT LIGHT
+    //vector from the light source to the hit
+    float lightDist = distance(hit.position, _SpotLightPosition.xyz);
+    float3 lightVector = (hit.position + hit.normal * 0.001f) - _SpotLightPosition.xyz;
+    float light = _SpotLightDirection.w / (4 * PI * lightDist * lightDist);
+
+    //projection of vectors onto the camera plane
+    float2 lightVectorXY = lightVector.xy;
+    float2 spotLightVectorXY = _SpotLightDirection.xy;
+
+    //projection of vectors onto the camera plane
+    float beta = acos(dot(normalize(lightVectorXY), normalize(spotLightVectorXY)));
+    float alfa = acos(dot(normalize(lightVector), normalize(_SpotLightDirection.xyz)));
+
+    //the law of inverse squares
+    light *= _SpotLightDirection.w / (4 * PI * max(0.001f, (alfa * alfa - _SpotLightPosition.w * _SpotLightPosition.w)));
+
+    //POINT LIGHT
+    lightDist = distance(hit.position, _PointLightPosition.xyz);
+    //the law of inverse squares
+    light += _PointLightPosition.w / (4 * PI * max(1, lightDist * lightDist - _LightRange * _LightRange));
+
+    //cone trace of a directional source
+    light *= _SpotLightDirection.w / (4 * PI * max(0.1f, (beta - _SpotLightPosition.w)));
+
+    //forming a reuslatt
+    return saturate(dot(hit.normal, _SpotLightDirection.xyz) * -1)
+        * light
+        * hit.albedo;
+}
+
+//Determining the collision color and updating the energy 
+//and direction of the beam at some iteration of the shadow 
+//ray calculation for a transparent object.
+float3 TransparencyShadowRayShade(inout Ray ray, RayHit hit)
+{
+    //Refresh ray to transparency ray
+    ray.origin = hit.position + ray.direction * 0.001f;
+    //the contribution coefficient of the new color
+    float kefTE = hit.transparency + 0.5f; 
+    ray.energy = ray.energy * kefTE;
+
+    return _SpotLightDirection.w
+        * (hit.albedo);
+}
+
+//Determining the collision color and updating the energy 
+//and direction of the beam at some iteration of the beam 
+//calculation for a transparent and opaque  object.
+float3 TransparencyShade(inout Ray ray, RayHit hit)
+{
+    //Refresh ray to transparency ray
+    ray.origin = hit.position + ray.direction * 0.001f;
+    float cos_a = dot(ray.direction, _SpotLightDirection.xyz);
+    float kefTE = hit.transparency * saturate(cos_a);
+    ray.energy = ray.energy * kefTE;
+
+    //if object not transparency
+    if (hit.transparency == 0.0f)                                               
+    {
+        //simple onlu lighting
+        return Lighting(ray, hit);
+    }
+    else
+    {
+        return _SpotLightDirection.w
+            * hit.albedo;
+    }
+}
+
+//Determining the collision color for a opaque  object, 
+//if there was no collision, then the color of the background texture.
+float3 RoomShade(inout Ray ray, RayHit hit)
+{
+    if(hit.distance<1.#INF)
+    //IF HIT WERE
+    {
+        //Refresh energy ray
+        ray.energy = ray.energy * hit.transparency;
+
+        return Lighting(ray, hit);
+    }
+    else 
+    //IF HIT WERE NOT
+    {
+        //we determine the color from the texture of the sky
+        ray.energy = 0.0f;
+        float theta = acos(ray.direction.y)/-PI;
+        float phi = atan2(ray.direction.x,-ray.direction.z)/-PI*0.5f;
+
+        return _SkyboxTexture.SampleLevel(sampler_SkyboxTexture, float2(phi,theta),0).xyz;
+    }
+}
+
+//Determining the collision color for an opaque object, 
+//as well as calculating the color shadow. 
+//To calculate the shadow, the Transparency Shadow RayShade function
+//is cyclically called, the results are summed up in a special way 
+//and the shadow color is obtained.
+float3 ShadowShade(inout Ray ray, RayHit hit)
+{
+    float3 result = 0.0f;
+    //Refresh energy ray
+    ray.energy = ray.energy * hit.transparency;
+
+    //Create first shadow ray
+    Ray shadowRay = CreateRay(hit.position + hit.normal * 0.1f, _SpotLightPosition.xyz);
+    RayHit shadowHit = CreateRayHit();
+    IntersectMeshObject(shadowRay, shadowHit, _MeshObjects[1]);
+
+    //if there is a shadow
+    if (shadowHit.distance != 1.#INF)                                                                                              
+    {
+        //changing the result
+        result += Lighting(ray, hit) * shadowRay.energy * TransparencyShadowRayShade(shadowRay, shadowHit);
+
+        //iterate until the energy of the beam runs 
+        //out or the allowable number of iterations runs 
+        //out or the beam flies into the void
+        for (float i = 0; i < _TransparencyCount; ++i)
+        {
+            shadowHit = CreateRayHit();
+            IntersectMeshObject(shadowRay, shadowHit, _MeshObjects[1]);
+
+            //if there was hit, calculate shadow of hit object
+            if (shadowHit.distance == 1.#INF)                                                                                              
+            {
+                break;
+            }
+            
+            //changing the result
+            result += Lighting(ray, hit) * shadowRay.energy * TransparencyShadowRayShade(shadowRay, shadowHit);
+            result *= shadowHit.transparency + 0.2f; //total dimming at each step
+
+            //IF ANY ENERGY == 0
+            if (!any(shadowRay.energy))
+            {
+                break;
+            }
+        }
+    }
+    else
+    {
+        //original color of object
+        result += Lighting(ray, hit);                                                          
+    }
+    
+    return result;
+}
+
+
+
+
+//KERNEL
+//The main shader function that is executed when assigning a shader to a rendering texture. 
+//The method is executed in parallel and separately for each pixel of the texture.
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{   
+    //determining the direction of the ray
+    uint width,height;
+    Result.GetDimensions(width,height);
+    float2 uv = float2((id.xy + float2(0.5f, 0.5f)) / float2(width, height) * 2.0f - 1.0f);
+    //initializing the ray
+    Ray ray = CreateCameraRay(uv);
+    float3 result = 0.0f;
+
+    //screen areas
+    if (uv.y > -0.9f && uv.y < 0.6f && uv.x > 0.0f && uv.x < 0.85)
+    {
+        //Main transparency object and room 
+        for (float i = 0; i < _TransparencyCount; ++i)
+        {
+            RayHit hit = Trace(ray);
+            result += ray.energy * TransparencyShade(ray, hit);
+
+            //IF ANY ENERGY == 0
+            if (!any(ray.energy))
+            {
+                break;
+            }
+        }
+    }
+    else
+    {
+        //Only room and shadow
+        RayHit hit = CreateRayHit();
+        IntersectMeshRoom(ray, hit, _MeshObjects[0]);
+
+        if (uv.y > -0.5f && uv.y < 0.5f && uv.x > -0.6f && uv.x < -0.1)
+        {
+            //With colore shadow
+            result = ShadowShade(ray, hit);
+        }
+        else
+        {
+            //Only room and basic shadow
+            result = ray.energy * RoomShade(ray, hit);
+        }
+    }
+    
+
+    Result[id.xy] = float4(result,1.0f);
+}

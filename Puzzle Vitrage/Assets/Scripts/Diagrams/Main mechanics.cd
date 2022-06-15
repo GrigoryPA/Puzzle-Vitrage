@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="TimeCounterScript">
+    <Position X="6.75" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAQAAAEAAQAAAAAAAAAAAAIgBAAAoAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TimeCounterScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LevelControllerScript">
+    <Position X="4.25" Y="2" Width="2.25" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="7.125" />
+        <Point X="5.375" Y="7.125" />
+        <Point X="5.375" Y="6.569" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAACgAAqQAAAAAhAAAAAAUIAAAEAIAABAAAAAABCI=</HashCode>
+      <FileName>Assets\Scripts\LevelControllers\LevelControllerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityEngine.MonoBehaviour">
+    <Position X="6.75" Y="5.75" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="RotationScript">
+    <Position X="2" Y="2" Width="2" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="7.125" />
+        <Point X="3.708" Y="7.125" />
+        <Point X="3.708" Y="5.031" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="rotateJoystick" Type="FloatingJoystick" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.625" Y="5.031" />
+        <Point X="2.625" Y="8.123" />
+        <Point X="4.25" Y="8.123" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="rotateJoystickVertical" Type="FloatingJoystick" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.208" Y="5.031" />
+        <Point X="2.208" Y="8.994" />
+        <Point X="4.25" Y="8.994" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="rotateJoystickHorizontal" Type="FloatingJoystick" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.417" Y="5.031" />
+        <Point X="2.417" Y="8.559" />
+        <Point X="4.25" Y="8.559" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAiAAAAAAIACAABAACAAABAQAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\RotationScript.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="rotateJoystick" />
+      <Field Name="rotateJoystickVertical" />
+      <Field Name="rotateJoystickHorizontal" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FloatingJoystick">
+    <Position X="4.25" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAACAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
